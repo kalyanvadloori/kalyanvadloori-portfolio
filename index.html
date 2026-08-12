@@ -3,12 +3,112 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Kalyan Vadloori — Senior Software Engineer building enterprise-scale healthcare and e-commerce platforms with React, TypeScript, Node.js, Azure and AWS." />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+
+    <title>Kalyan Vadloori — Senior Software Engineer</title>
+    <meta
+      name="description"
+      content="Kalyan Vadloori — Senior Software Engineer building enterprise-scale healthcare and e-commerce platforms with React, TypeScript, Node.js, Azure and AWS."
+    />
+    <meta name="author" content="Kalyan Vadloori" />
+    <meta
+      name="keywords"
+      content="Kalyan Vadloori, Senior Software Engineer, React Developer, TypeScript, Node.js, Azure, AWS, Healthcare Software, Hyderabad"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#080b14" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f8fd" />
+
+    <!--
+      All social/SEO URLs below must stay absolute and point at the live domain —
+      LinkedIn, WhatsApp and Slack ignore relative paths when building the preview
+      card. If you move to a custom domain, update every URL in this file plus
+      public/robots.txt, public/sitemap.xml and profile.siteUrl in src/data/resume.js.
+    -->
+    <link rel="canonical" href="https://kalyanvadlooridev.netlify.app/" />
+
+    <!-- Open Graph (LinkedIn, WhatsApp, Slack, Facebook) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kalyan Vadloori" />
+    <meta property="og:url" content="https://kalyanvadlooridev.netlify.app/" />
+    <meta property="og:title" content="Kalyan Vadloori — Senior Software Engineer" />
+    <meta
+      property="og:description"
+      content="Enterprise-scale healthcare and e-commerce platforms with React, TypeScript, Node.js, Azure and AWS. 4.5 years building in regulated, high-availability environments."
+    />
+    <!--
+      Using the headshot for now so the card is never broken. UPGRADE: export a
+      1200×630 banner (name + title + a screenshot), save it as public/og-image.jpg,
+      and point the two og:image/twitter:image tags at it — a wide branded card
+      converts far better in a LinkedIn message than a cropped square photo.
+    -->
+    <meta property="og:image" content="https://kalyanvadlooridev.netlify.app/profile.jpeg" />
+    <meta property="og:image:alt" content="Kalyan Vadloori — Senior Software Engineer" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kalyan Vadloori — Senior Software Engineer" />
+    <meta
+      name="twitter:description"
+      content="Enterprise-scale healthcare and e-commerce platforms with React, TypeScript, Node.js, Azure and AWS."
+    />
+    <meta name="twitter:image" content="https://kalyanvadlooridev.netlify.app/profile.jpeg" />
+
+    <!-- KV monogram favicon (brand gradient, no external file needed) -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%237c9cff'/><stop offset='1' stop-color='%23f472b6'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='url(%23g)'/><text x='50' y='52' text-anchor='middle' dominant-baseline='central' font-family='Segoe UI,Helvetica,sans-serif' font-size='44' font-weight='700' fill='%23ffffff'>KV</text></svg>"
+    />
+    <link rel="apple-touch-icon" href="/profile.jpeg" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <title>Kalyan Vadloori — Senior Software Engineer</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Hero portrait is the LCP element — start fetching it before the JS bundle parses. -->
+    <link rel="preload" as="image" href="/profile.jpeg" fetchpriority="high" />
+
+    <!--
+      JSON-LD Person schema. This is what makes Google show a rich result when
+      someone searches your name — recruiters do exactly that after reading a CV.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Kalyan Vadloori",
+        "jobTitle": "Senior Software Engineer",
+        "url": "https://kalyanvadlooridev.netlify.app/",
+        "image": "https://kalyanvadlooridev.netlify.app/profile.jpeg",
+        "email": "mailto:kalyanwd25@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hyderabad",
+          "addressRegion": "Telangana",
+          "addressCountry": "IN"
+        },
+        "sameAs": [
+          "https://www.linkedin.com/in/kalyan-vadloori",
+          "https://github.com/kalyanvadloori"
+        ],
+        "worksFor": {
+          "@type": "Organization",
+          "name": "InterScripts Software Pvt Ltd"
+        },
+        "knowsAbout": [
+          "React",
+          "TypeScript",
+          "Node.js",
+          "Azure",
+          "AWS",
+          "Healthcare Software",
+          "Micro Frontends",
+          "REST APIs"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

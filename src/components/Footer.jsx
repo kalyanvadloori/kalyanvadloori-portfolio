@@ -1,5 +1,6 @@
 import { Box, Container, Typography, Stack, IconButton, Divider } from '@mui/material'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import GitHubIcon from '@mui/icons-material/GitHub'
 import MailIcon from '@mui/icons-material/MailOutline'
 import PhoneIcon from '@mui/icons-material/PhoneOutlined'
 import { profile, navLinks } from '../data/resume'
@@ -51,6 +52,17 @@ export default function Footer() {
             >
               <LinkedInIcon fontSize="small" />
             </IconButton>
+            {profile.github && (
+              <IconButton
+                size="small"
+                href={profile.github}
+                target="_blank"
+                rel="noopener"
+                aria-label="GitHub"
+              >
+                <GitHubIcon fontSize="small" />
+              </IconButton>
+            )}
           </Stack>
         </Stack>
       </Container>

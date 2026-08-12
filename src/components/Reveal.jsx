@@ -1,18 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 import { Box } from '@mui/material'
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 /** Fades + lifts children into view once they enter the viewport. */
 export default function Reveal({ children, delay = 0, y = 24, sx }) {
   const ref = useRef(null)
-  const [shown, setShown] = useState(false)
+  // Resolved once at mount: visitors who asked for reduced motion start visible,
+  // so we never fade anything in for them and never set state inside the effect.
+  const [shown, setShown] = useState(prefersReducedMotion)
 
   useEffect(() => {
+    if (shown) return
     const el = ref.current
     if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setShown(true)
-      return
-    }
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -24,7 +27,7 @@ export default function Reveal({ children, delay = 0, y = 24, sx }) {
     )
     io.observe(el)
     return () => io.disconnect()
-  }, [])
+  }, [shown])
 
   return (
     <Box

@@ -62,32 +62,103 @@ export default function Navbar({ mode, onToggleMode }) {
       >
         <Container maxWidth={PAGE_MAX_WIDTH} sx={{ px: PAGE_PX }}>
           <Toolbar disableGutters sx={{ minHeight: { xs: 66, md: 80 } }}>
+            {/* Brand pill: gradient-ringed monogram + name over a mono role line. */}
             <Box
               component="a"
               href="#top"
-              sx={{ display: 'flex', alignItems: 'center', gap: 1.25, textDecoration: 'none' }}
+              aria-label={`${profile.name} — home`}
+              sx={(t) => ({
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1.25,
+                textDecoration: 'none',
+                pl: 0.75,
+                pr: { xs: 1.5, sm: 2.25 },
+                py: 0.75,
+                borderRadius: 999,
+                border: `1px solid ${t.palette.divider}`,
+                backgroundColor: alpha(t.palette.text.primary, t.palette.mode === 'dark' ? 0.04 : 0.03),
+                transition: 'border-color .3s, background-color .3s',
+                '&:hover': {
+                  borderColor: alpha(t.palette.secondary.main, 0.45),
+                  backgroundColor: alpha(t.palette.secondary.main, 0.06),
+                },
+                '&:hover .brand-ring': {
+                  boxShadow: `0 0 18px ${alpha(t.palette.secondary.main, 0.6)}`,
+                },
+              })}
             >
+              {/* Gradient ring — 2px of gradient showing around a solid inner disc. */}
               <Box
+                className="brand-ring"
                 sx={(t) => ({
-                  width: 36,
-                  height: 36,
-                  display: 'grid',
-                  placeItems: 'center',
-                  borderRadius: 2,
-                  color: '#fff',
-                  fontWeight: 800,
-                  fontSize: 15,
+                  width: 38,
+                  height: 38,
+                  flexShrink: 0,
+                  borderRadius: '50%',
+                  p: '2px',
                   background: `linear-gradient(135deg, ${t.palette.primary.main}, ${t.palette.secondary.main})`,
+                  boxShadow: `0 0 12px ${alpha(t.palette.secondary.main, 0.35)}`,
+                  transition: 'box-shadow .3s',
                 })}
               >
-                KV
-              </Box>
-              <Typography variant="subtitle1" fontWeight={700} color="text.primary">
-                Kalyan
-                <Box component="span" sx={{ color: 'primary.main' }}>
-                  .
+                <Box
+                  sx={(t) => ({
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '50%',
+                    display: 'grid',
+                    placeItems: 'center',
+                    // Solid disc so only the 2px rim of the parent gradient shows.
+                    backgroundColor: t.palette.background.default,
+                  })}
+                >
+                  {/* Gradient lives on the letters, not the disc — background-clip:
+                      text and a solid background colour can't share one element. */}
+                  <Box
+                    component="span"
+                    sx={(t) => ({
+                      fontWeight: 800,
+                      fontSize: 14,
+                      letterSpacing: '0.02em',
+                      background: `linear-gradient(135deg, ${t.palette.primary.main}, ${t.palette.secondary.main})`,
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    })}
+                  >
+                    KV
+                  </Box>
                 </Box>
-              </Typography>
+              </Box>
+
+              <Box sx={{ minWidth: 0 }}>
+                <Typography
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: { xs: '0.9rem', md: '0.98rem' },
+                    lineHeight: 1.2,
+                    color: 'text.primary',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {profile.name}
+                </Typography>
+                <Typography
+                  sx={{
+                    display: { xs: 'none', sm: 'block' },
+                    fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+                    fontSize: 9.5,
+                    fontWeight: 500,
+                    letterSpacing: '0.22em',
+                    textTransform: 'uppercase',
+                    color: 'secondary.main',
+                    lineHeight: 1.4,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {profile.role}
+                </Typography>
+              </Box>
             </Box>
 
             <Box sx={{ flexGrow: 1 }} />

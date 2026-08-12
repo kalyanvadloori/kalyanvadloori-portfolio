@@ -3,15 +3,21 @@ export const profile = {
   role: 'Senior Software Engineer',
   tagline:
     'I build enterprise-scale platforms in regulated, high-availability environments — secure document systems, healthcare data exchange and production releases owned end-to-end.',
+  // Keep this number, the "Years Experience" stat below, your LinkedIn headline
+  // and the resume PDF in sync — recruiters cross-check all four.
+  // Timeline: Feb 2022 → today = 4.5 years.
   summary:
-    'Senior Software Engineer with nearly 4 years of experience building enterprise-scale platforms across Healthcare, Telemedicine, Event Services, E-commerce and Booking domains — including systems serving 11M+ global learners, 3.5M+ annual patient encounters and 100M+ indexed clinical documents.',
+    'Senior Software Engineer with 4+ years of experience building enterprise-scale platforms across Healthcare, Telemedicine, Event Services, E-commerce and Booking domains — including systems serving 3.5M+ annual patient encounters and 100M+ indexed clinical documents.',
   summary2:
-    'Strong expertise in React, TypeScript, Node.js, AWS S3 and Azure Blob Storage. I architected a secure Document Management System with file uploads, dynamic folder hierarchy management, audit trails and Azure Blob Storage integration, plus automated malware scanning and file validation using Microsoft Defender so only verified documents reach production. I own production releases end-to-end and collaborate across Product, Platform, QA and Engineering organizations.',
+    'Strong expertise in React, TypeScript, Node.js, AWS S3 and Azure Blob Storage. I architected a secure Document Management System with file uploads, dynamic folder hierarchy management, audit trails and Azure Blob Storage integration, plus a quarantine-first upload pipeline where Microsoft Defender scans every file before promotion, so only verified documents ever reach production storage. I own production releases end-to-end and collaborate across Product, Platform, QA and Engineering organizations.',
   phone: '+91 9676522928',
   email: 'kalyanwd25@gmail.com',
   location: 'Hyderabad, India',
   linkedin: 'https://www.linkedin.com/in/kalyan-vadloori',
-  github: '',
+  github: 'https://github.com/kalyanvadloori',
+  // Live URL. If this changes, mirror it in index.html (canonical, og:url,
+  // twitter:image, JSON-LD), public/robots.txt and public/sitemap.xml.
+  siteUrl: 'https://kalyanvadlooridev.netlify.app',
   photo: '/profile.jpeg',
   // How the photo sits inside the circular avatar (CSS object-position).
   // Second value = vertical: lower % pulls the crop UP toward the face.
@@ -33,6 +39,17 @@ export const opportunityTypes = [
   'Other',
 ]
 
+/** Core stack shown as chips under the hero tagline. Keep it short — this is the
+ *  five-second scan, not the full list (that's `skills` below). */
+export const heroTech = [
+  'React',
+  'Node.js',
+  'Next.js',
+  'TypeScript',
+  'Azure',
+  'AWS',
+]
+
 export const stats = [
   { value: '4+', label: 'Years Experience' },
   { value: '3.5M+', label: 'Annual Patient Encounters' },
@@ -42,7 +59,7 @@ export const stats = [
 
 export const highlights = [
   'Secure Document Management System with dynamic folder hierarchy, audit trails and Azure Blob Storage',
-  'Automated malware scanning and file validation with Microsoft Defender before production storage',
+  'Quarantine-first uploads: Microsoft Defender scans every file before promotion, and infected files are blocked and auto-purged',
   'RESTful APIs for PDF, TIF and RTF healthcare document exchange over SFTP integrations',
   'Multi-environment CI/CD via Azure App Service, Azure DevOps Pipelines and GitLab CI',
   'Micro Frontends (MFE) and Backend-for-Frontend (BFF) architecture patterns',
@@ -89,7 +106,7 @@ export const skills = [
   {
     title: 'Databases & Storage',
     icon: 'database',
-    items: ['MySQL', 'MongoDB', 'Redis'],
+    items: ['MySQL', 'MongoDB'],
   },
 ]
 
@@ -103,8 +120,8 @@ export const experience = [
     current: true,
     points: [
       'Owned development of a healthcare platform supporting 5+ hospitals, 250+ clinical sites and 3.5M+ annual patient encounters across patient onboarding, clinical encounters, radiology and laboratory modules.',
-      'Architected a secure File Cabinet system with dynamic folder hierarchy management, document uploads, malware scanning and Azure Blob Storage integration.',
-      'Automated file validation using Microsoft Defender, ensuring only safe documents were stored in production while maintaining audit trails.',
+      'Architected a secure File Cabinet system with dynamic folder hierarchy management, document uploads and Azure Blob Storage integration.',
+      'Built a quarantine-first upload pipeline: uploads are held in an isolated quarantine store and scanned asynchronously by Microsoft Defender, keeping the upload path non-blocking while files sit in a pending state. Clean files are promoted to production Azure Blob Storage; infected files are blocked, automatically deleted from quarantine and reported back in the UI with a clear rejection message, with every scan outcome written to the audit trail.',
       'Designed and developed RESTful APIs handling PDF, TIF and RTF document formats, enabling secure healthcare data exchange through SFTP-based integrations across multiple clinical systems.',
       'Delivered multi-environment CI/CD deployments via Azure App Service and Azure DevOps, enabling reliable releases across multiple healthcare client environments and integrated legacy systems.',
       'Developed patient insurance statement generation and download functionality, automating creation of billing and insurance documents in PDF format for improved operational efficiency and patient accessibility.',
@@ -163,7 +180,8 @@ export const projects = [
     accent: 'primary',
     points: [
       'Healthcare platform supporting 3.5M+ annual patient encounters with AI-powered semantic search across 100M+ clinical documents.',
-      'Secure File Cabinet system with dynamic folder hierarchy, document upload, malware scanning and Azure Blob Storage integration.',
+      'Secure File Cabinet with dynamic folder hierarchy, document upload and Azure Blob Storage integration.',
+      'Quarantine-first upload pipeline: files land in an isolated quarantine store and are scanned asynchronously by Microsoft Defender, so uploads never block the UI. Clean files are promoted to production Blob Storage; infected files are blocked, auto-purged from quarantine, and surfaced back to the user with a clear rejection message.',
       'RESTful APIs handling PDF, TIF and RTF formats for secure data exchange via SFTP across multiple clinical systems.',
       'Automated patient insurance statement and billing document generation in PDF.',
       'Multi-environment CI/CD delivery through Azure App Service and Azure DevOps Pipelines.',

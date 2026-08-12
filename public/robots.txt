@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Must be the absolute URL of the sitemap file itself, not the site root.
+Sitemap: https://kalyanvadlooridev.netlify.app/sitemap.xml

@@ -4,6 +4,7 @@ import { alpha } from '@mui/material/styles'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import MailIcon from '@mui/icons-material/MailOutline'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import GitHubIcon from '@mui/icons-material/GitHub'
 import PhoneIcon from '@mui/icons-material/PhoneOutlined'
 import PlaceIcon from '@mui/icons-material/PlaceOutlined'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -15,12 +16,12 @@ import {
   SiExpress,
   SiMysql,
   SiMongodb,
-  SiRedis,
 } from 'react-icons/si'
 import { VscAzure } from 'react-icons/vsc'
 import { FaAws } from 'react-icons/fa'
-import { profile, stats } from '../data/resume'
+import { profile, stats, heroTech } from '../data/resume'
 import Reveal from './Reveal'
+import CountUp from './CountUp'
 import { PAGE_MAX_WIDTH, PAGE_PX } from '../theme'
 
 const ROLES = [
@@ -45,11 +46,18 @@ function useTypewriter(words, typing = 85, deleting = 45, pause = 1600) {
       } else {
         timer = setTimeout(() => setPhase('deleting'), pause)
       }
-    } else if (text.length > 0) {
-      timer = setTimeout(() => setText(word.slice(0, text.length - 1)), deleting)
     } else {
-      setPhase('typing')
-      setIndex((i) => i + 1)
+      // Deleting. The hand-off to the next word happens inside the timeout so
+      // no state is set synchronously in the effect body (cascading renders).
+      timer = setTimeout(() => {
+        if (text.length > 1) {
+          setText(word.slice(0, text.length - 1))
+        } else {
+          setText('')
+          setPhase('typing')
+          setIndex((i) => i + 1)
+        }
+      }, deleting)
     }
 
     return () => clearTimeout(timer)
@@ -67,18 +75,63 @@ function useTypewriter(words, typing = 85, deleting = 45, pause = 1600) {
 /** One full lap of the ring, in seconds. Raise it to slow the orbit down. */
 const ORBIT_SECONDS = 40
 
+// Nine badges spaced 40° apart, starting at 12 o'clock — an even lap with no gaps.
+// If you add or remove one, respace the whole ring (360 / count) so it stays even.
 const TECH_ORBIT = [
   { label: 'React', Icon: SiReact, color: '#61DAFB', angle: -90 },
-  { label: 'TypeScript', Icon: SiTypescript, color: '#3178C6', angle: -45 },
-  { label: 'Next.js', Icon: SiNextdotjs, color: '#E5E7EB', angle: -12 },
-  { label: 'Node.js', Icon: SiNodedotjs, color: '#5FA04E', angle: 22 },
-  { label: 'Express', Icon: SiExpress, color: '#CBD5E1', angle: 58 },
-  { label: 'Azure', Icon: VscAzure, color: '#0078D4', angle: 95 },
-  { label: 'AWS', Icon: FaAws, color: '#FF9900', angle: 132 },
-  { label: 'MySQL', Icon: SiMysql, color: '#00758F', angle: 168 },
-  { label: 'MongoDB', Icon: SiMongodb, color: '#47A248', angle: 205 },
-  { label: 'Redis', Icon: SiRedis, color: '#FF4438', angle: 242 },
+  { label: 'TypeScript', Icon: SiTypescript, color: '#3178C6', angle: -50 },
+  { label: 'Next.js', Icon: SiNextdotjs, color: '#E5E7EB', angle: -10 },
+  { label: 'Node.js', Icon: SiNodedotjs, color: '#5FA04E', angle: 30 },
+  { label: 'Express', Icon: SiExpress, color: '#CBD5E1', angle: 70 },
+  { label: 'Azure', Icon: VscAzure, color: '#0078D4', angle: 110 },
+  { label: 'AWS', Icon: FaAws, color: '#FF9900', angle: 150 },
+  { label: 'MySQL', Icon: SiMysql, color: '#00758F', angle: 190 },
+  { label: 'MongoDB', Icon: SiMongodb, color: '#47A248', angle: 230 },
 ]
+
+/**
+ * One stat tile. Owns its own hover state so mousing over the card replays the
+ * count-up without re-rendering the other three.
+ */
+function StatCard({ stat }) {
+  const [replay, setReplay] = useState(0)
+
+  return (
+    <Paper
+      elevation={0}
+      onMouseEnter={() => setReplay((r) => r + 1)}
+      sx={(t) => ({
+        p: { xs: 2, md: 2.75 },
+        textAlign: 'center',
+        borderRadius: 3,
+        border: `1px solid ${t.palette.divider}`,
+        backgroundColor: alpha(t.palette.background.paper, t.palette.mode === 'dark' ? 0.5 : 0.75),
+        backdropFilter: 'blur(10px)',
+        transition: 'transform .3s, border-color .3s',
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          borderColor: alpha(t.palette.primary.main, 0.5),
+        },
+      })}
+    >
+      <Typography
+        variant="h4"
+        sx={(t) => ({
+          fontWeight: 800,
+          fontSize: { xs: '1.9rem', md: '2.5rem' },
+          background: `linear-gradient(120deg, ${t.palette.primary.main}, ${t.palette.secondary.main})`,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        })}
+      >
+        <CountUp value={stat.value} replay={replay} />
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        {stat.label}
+      </Typography>
+    </Paper>
+  )
+}
 
 export default function Hero() {
   const typed = useTypewriter(ROLES)
@@ -223,6 +276,28 @@ export default function Hero() {
               </Typography>
             </Reveal>
 
+            <Reveal delay={230}>
+              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 3.5 }}>
+                {heroTech.map((tech) => (
+                  <Chip
+                    key={tech}
+                    label={tech}
+                    size="small"
+                    sx={(t) => ({
+                      bgcolor: alpha(t.palette.text.primary, 0.05),
+                      border: `1px solid ${t.palette.divider}`,
+                      transition: 'all .25s',
+                      '&:hover': {
+                        bgcolor: alpha(t.palette.primary.main, 0.14),
+                        color: 'primary.main',
+                        borderColor: alpha(t.palette.primary.main, 0.4),
+                      },
+                    })}
+                  />
+                ))}
+              </Stack>
+            </Reveal>
+
             <Reveal delay={260}>
               <Stack
                 direction="row"
@@ -260,6 +335,18 @@ export default function Hero() {
                 >
                   LinkedIn
                 </Button>
+                {profile.github && (
+                  <Button
+                    size="large"
+                    href={profile.github}
+                    target="_blank"
+                    rel="noopener"
+                    startIcon={<GitHubIcon />}
+                    sx={{ color: 'text.secondary' }}
+                  >
+                    GitHub
+                  </Button>
+                )}
               </Stack>
             </Reveal>
           </Grid>
@@ -334,12 +421,31 @@ export default function Hero() {
                       t.palette.mode === 'dark'
                         ? '0 30px 70px rgba(0,0,0,0.65)'
                         : '0 24px 60px rgba(15,23,42,0.18)',
+                    /**
+                     * Zooms in on load, landing just after the surrounding rings
+                     * appear. `both` fill keeps the start frame before the delay
+                     * elapses and the end frame after, so the photo never flashes
+                     * at full size first — and reduced-motion visitors (whose
+                     * animations are cut to 0.01ms globally) still end up here.
+                     */
+                    animation: 'portraitIn 1s cubic-bezier(.2,.8,.2,1) .3s both',
+                    '@keyframes portraitIn': {
+                      from: { opacity: 0, transform: 'scale(0.88)' },
+                      to: { opacity: 1, transform: 'scale(1)' },
+                    },
+                    // Slow push-in on hover. The circle clips it, so the crop
+                    // tightens on the face instead of the frame growing.
+                    '&:hover .portrait-img': { transform: 'scale(1.07)' },
                   })}
                 >
                   <Box
                     component="img"
+                    className="portrait-img"
                     src={profile.photo}
-                    alt={profile.name}
+                    alt={`${profile.name} — ${profile.role}`}
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none'
                     }}
@@ -350,6 +456,7 @@ export default function Hero() {
                       borderRadius: '50%',
                       objectFit: 'cover',
                       objectPosition: profile.photoPosition || '50% 25%',
+                      transition: 'transform .7s cubic-bezier(.2,.8,.2,1)',
                     }}
                   />
                 </Box>
@@ -441,38 +548,7 @@ export default function Hero() {
           <Grid container spacing={2} sx={{ mt: { xs: 6, md: 10 } }}>
             {stats.map((s) => (
               <Grid item xs={6} md={3} key={s.label}>
-                <Paper
-                  elevation={0}
-                  sx={(t) => ({
-                    p: { xs: 2, md: 2.75 },
-                    textAlign: 'center',
-                    borderRadius: 3,
-                    border: `1px solid ${t.palette.divider}`,
-                    backgroundColor: alpha(t.palette.background.paper, t.palette.mode === 'dark' ? 0.5 : 0.75),
-                    backdropFilter: 'blur(10px)',
-                    transition: 'transform .3s, border-color .3s',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                      borderColor: alpha(t.palette.primary.main, 0.5),
-                    },
-                  })}
-                >
-                  <Typography
-                    variant="h4"
-                    sx={(t) => ({
-                      fontWeight: 800,
-                      fontSize: { xs: '1.9rem', md: '2.5rem' },
-                      background: `linear-gradient(120deg, ${t.palette.primary.main}, ${t.palette.secondary.main})`,
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                    })}
-                  >
-                    {s.value}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {s.label}
-                  </Typography>
-                </Paper>
+                <StatCard stat={s} />
               </Grid>
             ))}
           </Grid>

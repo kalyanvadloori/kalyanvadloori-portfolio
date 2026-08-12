@@ -11,6 +11,7 @@ import {
   MenuItem,
   Snackbar,
   Alert,
+  CircularProgress,
 } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import MailIcon from '@mui/icons-material/MailOutline'
@@ -25,6 +26,14 @@ import { PAGE_MAX_WIDTH, PAGE_PX } from '../theme'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const EMPTY = { name: '', email: '', type: opportunityTypes[0], message: '' }
+
+/**
+ * Web3Forms access key, read from `.env` (see .env.example).
+ * With a key set, messages POST straight to your inbox. Without one, the form
+ * falls back to opening the visitor's mail client — which silently fails on
+ * machines with no mail app configured, so set the key before sharing the site.
+ */
+const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY
 
 /** Small bordered fact row used down the left column. */
 function FactRow({ label, value }) {
@@ -52,7 +61,8 @@ function FactRow({ label, value }) {
 export default function Contact() {
   const [values, setValues] = useState(EMPTY)
   const [errors, setErrors] = useState({})
-  const [toast, setToast] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [toast, setToast] = useState(null) // { severity, message } | null
 
   const setField = (key) => (e) => {
     setValues((v) => ({ ...v, [key]: e.target.value }))
@@ -69,15 +79,8 @@ export default function Contact() {
     return Object.keys(next).length === 0
   }
 
-  /**
-   * There is no backend here, so the form composes a prefilled email and hands
-   * it to the visitor's mail client. Swap this for a Formspree/EmailJS POST if
-   * you'd rather have submissions land in your inbox directly.
-   */
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!validate()) return
-
+  /** Last-resort path when no Web3Forms key is configured, or the POST fails. */
+  const openMailClient = () => {
     const subject = `[${values.type}] Portfolio enquiry from ${values.name.trim()}`
     const body = [
       `Name: ${values.name.trim()}`,
@@ -90,9 +93,59 @@ export default function Contact() {
     window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(body)}`
+  }
 
-    setToast(true)
-    setValues(EMPTY)
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!validate() || sending) return
+
+    // No key configured yet — hand off to the visitor's mail client and say so
+    // honestly, rather than claiming the message was sent.
+    if (!ACCESS_KEY) {
+      openMailClient()
+      setToast({
+        severity: 'info',
+        message: `Opening your email app — if nothing happens, write to ${profile.email}`,
+      })
+      return
+    }
+
+    setSending(true)
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: ACCESS_KEY,
+          subject: `[${values.type}] Portfolio enquiry from ${values.name.trim()}`,
+          from_name: 'Portfolio Contact Form',
+          name: values.name.trim(),
+          email: values.email.trim(),
+          opportunity_type: values.type,
+          message: values.message.trim(),
+          botcheck: '', // Web3Forms honeypot
+        }),
+      })
+      const data = await res.json()
+
+      if (data.success) {
+        setToast({
+          severity: 'success',
+          message: 'Message sent — thank you. I usually reply within a day.',
+        })
+        setValues(EMPTY)
+      } else {
+        throw new Error(data.message || 'Submission rejected')
+      }
+    } catch {
+      openMailClient()
+      setToast({
+        severity: 'warning',
+        message: `Couldn't send that automatically — opening your email app instead. Or write to ${profile.email}`,
+      })
+    } finally {
+      setSending(false)
+    }
   }
 
   const fieldSx = (t) => ({
@@ -306,19 +359,35 @@ export default function Contact() {
                     />
                   </Box>
 
+                  {/* Honeypot — hidden from people, irresistible to spam bots. */}
+                  <Box
+                    component="input"
+                    type="checkbox"
+                    name="botcheck"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    sx={{ display: 'none' }}
+                  />
+
                   <Button
                     type="submit"
                     variant="contained"
                     size="large"
                     fullWidth
-                    endIcon={<SendIcon />}
+                    disabled={sending}
+                    endIcon={
+                      sending ? <CircularProgress size={18} color="inherit" /> : <SendIcon />
+                    }
                     sx={{ py: 1.4, fontSize: '1rem' }}
                   >
-                    Send Message
+                    {sending ? 'Sending…' : 'Send Message'}
                   </Button>
 
                   <Typography variant="caption" color="text.secondary" textAlign="center">
-                    Opens in your email app with the details filled in.
+                    {ACCESS_KEY
+                      ? 'Goes straight to my inbox — I reply within a day.'
+                      : 'Opens in your email app with the details filled in.'}
                   </Typography>
                 </Stack>
               </Paper>
@@ -328,13 +397,18 @@ export default function Contact() {
       </Container>
 
       <Snackbar
-        open={toast}
-        autoHideDuration={5000}
-        onClose={() => setToast(false)}
+        open={Boolean(toast)}
+        autoHideDuration={6000}
+        onClose={() => setToast(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert severity="success" variant="filled" onClose={() => setToast(false)}>
-          Your email app should be opening — if it doesn&apos;t, write to {profile.email}
+        <Alert
+          severity={toast?.severity || 'info'}
+          variant="filled"
+          onClose={() => setToast(null)}
+          sx={{ maxWidth: 460 }}
+        >
+          {toast?.message}
         </Alert>
       </Snackbar>
     </Box>

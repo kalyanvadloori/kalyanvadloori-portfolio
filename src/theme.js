@@ -60,6 +60,20 @@ export const getTheme = (mode) => {
           '::selection': {
             background: alpha(theme.palette.primary.main, 0.28),
           },
+          /**
+           * Blanket respect for visitors who ask their OS to reduce motion —
+           * covers the dashed orbit ring, the availability pulse dot, the bounce
+           * arrow and the typewriter caret in one place, so new animations are
+           * covered automatically instead of needing their own opt-out.
+           */
+          '@media (prefers-reduced-motion: reduce)': {
+            '*, *::before, *::after': {
+              animationDuration: '0.01ms !important',
+              animationIterationCount: '1 !important',
+              transitionDuration: '0.01ms !important',
+              scrollBehavior: 'auto !important',
+            },
+          },
           '::-webkit-scrollbar': { width: 10, height: 10 },
           '::-webkit-scrollbar-track': { background: 'transparent' },
           '::-webkit-scrollbar-thumb': {
