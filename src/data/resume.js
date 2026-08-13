@@ -9,7 +9,7 @@ export const profile = {
   summary:
     'Senior Software Engineer with 4+ years of experience building enterprise-scale platforms across Healthcare, Telemedicine, Event Services, E-commerce and Booking domains — including systems serving 3.5M+ annual patient encounters and 100M+ indexed clinical documents.',
   summary2:
-    'Strong expertise in React, TypeScript, Node.js, AWS S3 and Azure Blob Storage. I architected a secure Document Management System with file uploads, dynamic folder hierarchy management, audit trails and Azure Blob Storage integration, plus a quarantine-first upload pipeline where Microsoft Defender scans every file before promotion, so only verified documents ever reach production storage. I own production releases end-to-end and collaborate across Product, Platform, QA and Engineering organizations.',
+    'Strong expertise in React, TypeScript, Node.js, Azure Blob Storage and AWS S3. I architected a secure Document Management System with file uploads, dynamic folder hierarchy management, audit trails and Azure Blob Storage integration, plus a quarantine-first upload pipeline where Microsoft Defender scans every file before promotion, so only verified documents ever reach production storage. I own production releases end-to-end and collaborate across Product, Platform, QA and Engineering organizations.',
   phone: '+91 9676522928',
   email: 'kalyanwd25@gmail.com',
   location: 'Hyderabad, India',
@@ -61,7 +61,7 @@ export const highlights = [
   'Secure Document Management System with dynamic folder hierarchy, audit trails and Azure Blob Storage',
   'Quarantine-first uploads: Microsoft Defender scans every file before promotion, and infected files are blocked and auto-purged',
   'RESTful APIs for PDF, TIF and RTF healthcare document exchange over SFTP integrations',
-  'Multi-environment CI/CD via Azure App Service, Azure DevOps Pipelines and GitLab CI',
+  'Multi-environment CI/CD via Azure DevOps Pipelines and GitLab CI',
   'Micro Frontends (MFE) and Backend-for-Frontend (BFF) architecture patterns',
   'Production release ownership in regulated, high-availability environments',
 ]
@@ -70,7 +70,7 @@ export const skills = [
   {
     title: 'Programming Languages',
     icon: 'terminal',
-    items: ['JavaScript', 'TypeScript', 'SQL'],
+    items: ['JavaScript', 'TypeScript', 'MySQL'],
   },
   {
     title: 'Frontend',
@@ -96,7 +96,7 @@ export const skills = [
   {
     title: 'Cloud Platforms',
     icon: 'cloud',
-    items: ['AWS S3', 'Azure App Service', 'Azure DevOps', 'Azure Blob Storage'],
+    items: ['AWS S3', 'Azure DevOps', 'Azure Blob Storage'],
   },
   {
     title: 'CI/CD & Release',
@@ -123,7 +123,7 @@ export const experience = [
       'Architected a secure File Cabinet system with dynamic folder hierarchy management, document uploads and Azure Blob Storage integration.',
       'Built a quarantine-first upload pipeline: uploads are held in an isolated quarantine store and scanned asynchronously by Microsoft Defender, keeping the upload path non-blocking while files sit in a pending state. Clean files are promoted to production Azure Blob Storage; infected files are blocked, automatically deleted from quarantine and reported back in the UI with a clear rejection message, with every scan outcome written to the audit trail.',
       'Designed and developed RESTful APIs handling PDF, TIF and RTF document formats, enabling secure healthcare data exchange through SFTP-based integrations across multiple clinical systems.',
-      'Delivered multi-environment CI/CD deployments via Azure App Service and Azure DevOps, enabling reliable releases across multiple healthcare client environments and integrated legacy systems.',
+      'Delivered multi-environment CI/CD deployments via Azure DevOps, enabling reliable releases across multiple healthcare client environments and integrated legacy systems.',
       'Developed patient insurance statement generation and download functionality, automating creation of billing and insurance documents in PDF format for improved operational efficiency and patient accessibility.',
     ],
     stack: ['React', 'Node.js', 'MySQL', 'Azure Blob Storage', 'Azure DevOps', 'REST APIs'],
@@ -137,14 +137,14 @@ export const experience = [
     current: false,
     points: [
       'Developed and maintained scalable full-stack web applications across event management, e-commerce and booking domains using Node.js, Express.js, React.js, Material UI and AWS S3.',
-      'Created and consumed RESTful APIs, implemented authentication/authorization and integrated databases to support business-critical functionality.',
+      'Built and consumed RESTful APIs to support scalable business applications, implemented role-based authentication and authorization, integrated databases and incorporated the Razorpay payment gateway for secure online transactions.',
       'Designed responsive and reusable UI components with React.js and Material UI, improving application usability and maintainability.',
       'Enhanced application performance, security and scalability through optimization and best coding practices.',
       'Integrated AWS S3 buckets for secure file storage, retrieval and media asset management, improving application scalability and reliability.',
-      'Implemented cron jobs to automate email notifications, reminders, booking confirmations and scheduled business workflows.',
+      'Implemented cron jobs to automate email notifications, payment workflows, reminders, booking confirmations and scheduled business processes.',
       'Worked in Agile environments, collaborating with cross-functional teams to deliver scalable, client-focused solutions.',
     ],
-    stack: ['React.js', 'Node.js', 'Express.js', 'Material UI', 'MySQL', 'AWS S3'],
+    stack: ['React.js', 'Node.js', 'Express.js', 'Material UI', 'MySQL', 'AWS S3', 'Razorpay'],
   },
   {
     company: 'eVaidya Pvt Ltd',
@@ -184,7 +184,7 @@ export const projects = [
       'Quarantine-first upload pipeline: files land in an isolated quarantine store and are scanned asynchronously by Microsoft Defender, so uploads never block the UI. Clean files are promoted to production Blob Storage; infected files are blocked, auto-purged from quarantine, and surfaced back to the user with a clear rejection message.',
       'RESTful APIs handling PDF, TIF and RTF formats for secure data exchange via SFTP across multiple clinical systems.',
       'Automated patient insurance statement and billing document generation in PDF.',
-      'Multi-environment CI/CD delivery through Azure App Service and Azure DevOps Pipelines.',
+      'Multi-environment CI/CD delivery through Azure DevOps Pipelines.',
     ],
     tech: ['React', 'Node.js', 'MySQL', 'Azure AI Search', 'Azure Blob Storage', 'Azure DevOps'],
   },
@@ -225,7 +225,7 @@ export const projects = [
       'Automated PDF prescription and report generation with secure email delivery.',
       'Real-time doctor–patient communication during virtual consultations using Socket.io.',
     ],
-    tech: ['Node.js', 'React', 'TypeScript', 'MySQL', 'Socket.io', 'AWS S3'],
+    tech: ['Node.js', 'React', 'TypeScript', 'MySQL', 'Socket.io', 'AWS S3', 'Razorpay'],
   },
   {
     name: 'Simply Basics',
@@ -246,22 +246,23 @@ export const projects = [
     tech: ['React.js', 'Node.js', 'Express.js', 'MySQL', 'AWS S3', 'JWT'],
   },
   {
-    name: 'Wavelengths',
-    code: 'WL',
-    tags: ['Booking', 'Web'],
+    name: 'MyChat25',
+    link: 'https://mychat25.netlify.app/',
+    code: 'MC',
+    tags: ['Real-time Chat', 'Personal Project'],
     blurb:
-      'Private bookings and public ticket sales share one calendar, so artists never get double-booked.',
-    subtitle: 'Entertainment booking platform for artists, bands and organizers',
-    category: 'Booking',
+      'Messages appear the moment they are sent — an open Firebase stream instead of a refresh button.',
+    subtitle: 'Real-time chat application built as a personal project',
+    category: 'Real-time',
     accent: 'info',
     points: [
-      'Platform for booking artists/bands for private events and selling tickets to public concerts.',
-      'Dual booking system with real-time availability management across private and public events.',
-      'RazorPay integration covering booking deposits, full payments and ticket purchases.',
-      'JWT authentication and RBAC for customers, artists, bands and organizers with personalized dashboards.',
-      'Artist/band profile management with portfolio showcase, pricing models, availability calendar and performance history.',
+      'Personal project: a real-time chat application where messages sync instantly between users.',
+      'Live message delivery driven by Firebase real-time listeners, so conversations update without polling or page refreshes.',
+      'Firebase Authentication for user sign-in and session handling.',
+      'Responsive chat interface built with React and Material UI, usable on both mobile and desktop.',
+      'Deployed as a static build on Netlify with Firebase as the entire backend — no server to maintain.',
     ],
-    tech: ['React.js', 'TypeScript', 'Node.js', 'Express.js', 'MySQL', 'Material UI'],
+    tech: ['React', 'TypeScript', 'Material UI', 'Firebase'],
   },
 ]
 
