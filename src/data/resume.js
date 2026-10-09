@@ -18,7 +18,7 @@ export const profile = {
   // Live URL. If this changes, mirror it in index.html (canonical, og:url,
   // twitter:image, JSON-LD), public/robots.txt and public/sitemap.xml.
   siteUrl: 'https://kalyanvadlooridev.netlify.app',
-  photo: '/profile.jpeg',
+  photo: '/dev.jpeg',
   // How the photo sits inside the circular avatar (CSS object-position).
   // Second value = vertical: lower % pulls the crop UP toward the face.
   // Tune this if your headshot isn't a tight square crop.
